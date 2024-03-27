@@ -2,7 +2,7 @@ name: Continuous Integration with GitHub, GitHub Actions and Docker Hub
 
 on:
   push:
-    branches: main
+    branches: master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,18 +15,18 @@ jobs:
        with:
          username: ${{ secrets.DOCKER_USERNAME }}
          password: ${{ secrets.DOCKER_PASSWORD }}
-     
-     - name: Setup Node JS
+
+     - name: Setup Node.js
        uses: actions/setup-node@v4
        with:
-         node-version: '14'
-
-     - name: Install Node Modules in Back-end
-       working-directory: ./02_Dockerized/backend
-       run: npm install
+         node-version: 14
 
      - name: Install Node Modules in Front-end
        working-directory: ./02_Dockerized/frontend
+       run: npm install
+
+     - name: Install Node Modules in Back-end
+       working-directory: ./02_Dockerized/backend
        run: npm install
        
      - name: Docker Compose Build
@@ -36,13 +36,13 @@ jobs:
      - name: Push to Docker Hub Container Registry
        run: |
          docker tag node-react-backend:latest ${{secrets.DOCKER_USERNAME}}/node-react-backend:latest
-         docker tag node-react-backend:latest ${{secrets.DOCKER_USERNAME}}/node-react-backend:${{github.run_id}}
-         
-         docker push ${{secrets.DOCKER_USERNAME}}/node-react-backend:latest
-         docker push ${{secrets.DOCKER_USERNAME}}/node-react-backend:${{github.run_id}}
-
          docker tag node-react-frontend:latest ${{secrets.DOCKER_USERNAME}}/node-react-frontend:latest
+         
+         docker tag node-react-backend:latest ${{secrets.DOCKER_USERNAME}}/node-react-backend:${{github.run_id}}
          docker tag node-react-frontend:latest ${{secrets.DOCKER_USERNAME}}/node-react-frontend:${{github.run_id}}
          
+         docker push ${{secrets.DOCKER_USERNAME}}/node-react-backend:latest
          docker push ${{secrets.DOCKER_USERNAME}}/node-react-frontend:latest
+         
+         docker push ${{secrets.DOCKER_USERNAME}}/node-react-backend:${{github.run_id}}
          docker push ${{secrets.DOCKER_USERNAME}}/node-react-frontend:${{github.run_id}}
