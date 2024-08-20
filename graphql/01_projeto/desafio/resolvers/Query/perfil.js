@@ -1,14 +1,22 @@
 const db = require('../../config/db')
 
 module.exports = {
-    async perfis() {
+    perfis() {
         return db('perfis')
-        .select('id', 'nome','rotulo')
-        .then( res => res )
-        .catch( err => err.sqlMessage )
-        .finally (() => db.destroy())
     },
-    async perfil(_, { filtro }) {
-        // implementar
+    perfil(_, { filtro }) {
+        if(!filtro) return null
+        const { id, nome } = filtro
+        if(id) {
+            return db('perfis')
+                .where({ id })
+                .first()
+        } else if(nome) {
+            return db('perfis')
+                .where({ nome })
+                .first()
+        } else {
+            return null
+        }
     }
 }

@@ -1,1 +1,2 @@
-
+# ignorando pastas dentro de graphql
+/graphql/.01_projeto
