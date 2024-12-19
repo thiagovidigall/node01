@@ -8,8 +8,6 @@ const isSunday = (date) => { return date.getDay() === 0 };
 const calculateRide = (distance, date) => {
   if(typeof distance !== "number" || distance < 0) throw new Error("Invalid parameter distance");
   if (!(date instanceof Date)) throw new Error("Invalid parameter date");
-
-
   if (isOverNight(date)) {
     return distance * OVERNIGHT_RATE;
   }
