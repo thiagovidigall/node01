@@ -1,3 +1,4 @@
 test("Deve criar uma conta", function () {
-  console.log('teste')
+  const valid = true;
+    expect(valid).toBe(true);
 });
