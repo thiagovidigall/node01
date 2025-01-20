@@ -1,7 +1,7 @@
-import CurrencyAPI from "./CurrencyAPI";
+import CurrencyAPI from './CurrencyAPI';
 
 export default class CurrencyAPIFake implements CurrencyAPI {
-    convert(amount: number, currency: string): number {
-        return amount * 5;
-    }    
+  convert(amount: number, currency: string): number {
+    return amount * 6;
+  }
 }

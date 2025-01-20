@@ -1,7 +1,7 @@
 export default class Order {
-    cpf: string;
-    
-    constructor (cpf: string){
-        cpf = cpf;
-    }
+  cpf: string;
+
+  constructor(cpf: string) {
+    this.cpf = cpf;
+  }
 }
