@@ -1,8 +1,8 @@
 import sinon from 'sinon';
 
-import Account from '../src/Account';
-import CurrencyAPI from '../src/CurrencyAPI';
-import CurrencyAPIFake from '../src/CurrencyAPIFake';
+import Account from '../src/ex_002_account/Account';
+import CurrencyAPI from '../src/ex_002_account/CurrencyAPI';
+import CurrencyAPIFake from '../src/ex_002_account/CurrencyAPIFake';
 
 let account: Account;
 let currencyAPI: CurrencyAPI;
