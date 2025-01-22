@@ -1,5 +1,5 @@
 import Cpf from '../ex_001_cpf/Cpf';
-import Cupom from './Cupom';
+import Coupon from './Coupon';
 import Item from './Item';
 import OrderItem from './OrderItem';
 
@@ -7,7 +7,7 @@ export default class Order {
   // cpf: string;
   cpf: Cpf;
   orderItens: OrderItem[] = [];
-  cupom: Cupom | undefined;
+  coupon: Coupon | undefined;
 
   constructor(cpfRaw: string) {
     // const cpf = new Cpf(cpfRaw);
@@ -20,8 +20,9 @@ export default class Order {
     this.orderItens.push(new OrderItem(item.id, item.price, amount));
   }
 
-  addCupom(cupom: Cupom) {
-    this.cupom = cupom;
+  addCoupon(coupon: Coupon) {
+    if(coupon.isExpired()) return;
+    this.coupon = coupon;
   }
 
   getTotal() {
@@ -30,8 +31,8 @@ export default class Order {
       total += element.getTotal();
     });
 
-    if(this.cupom) {
-      return total -= total * this.cupom.percentage / 100;
+    if(this.coupon) {
+      return total -= total * this.coupon.percentage / 100;
     }
     return total;
   }

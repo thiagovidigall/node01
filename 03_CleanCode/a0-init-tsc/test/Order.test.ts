@@ -1,5 +1,5 @@
 import Cpf from '../src/ex_001_cpf/Cpf';
-import Cupom from '../src/ex_003_order/Cupom';
+import Coupon from '../src/ex_003_order/Coupon';
 import Item from '../src/ex_003_order/Item';
 import Order from '../src/ex_003_order/Order';
 
@@ -29,9 +29,16 @@ test("deve criar um pedido com 3 itens", function () {
     expect(order.getTotal()).toBe(77);
 })
 
-test("deve criar um pedido com cupon de desconto", function() {
+test("deve criar um pedido com cupom de desconto", function() {
     const order = new Order("839.435.452-10");
     order.addItem(new Item(1, "Musica", "CD", 10), 3);
-    order.addCupom(new Cupom("VALE10", 10));
+    order.addCoupon(new Coupon("VALE10", 10));
     expect(order.getTotal()).toBe(27);
+})
+
+test("deve criar um pedido com cupon de desconto expiado", function() {
+    const order = new Order("839.435.452-10");
+    order.addItem(new Item(1, "Musica", "CD", 10), 3);
+    order.addCoupon(new Coupon("VALE10", 10, new Date("2024-01-25")));
+    expect(order.getTotal()).toBe(30);
 })
