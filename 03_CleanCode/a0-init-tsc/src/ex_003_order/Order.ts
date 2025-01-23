@@ -9,11 +9,11 @@ export default class Order {
   orderItens: OrderItem[] = [];
   coupon: Coupon | undefined;
 
-  constructor(cpfRaw: string) {
+  constructor(cpf: string, readonly created: Date = new Date()) {
     // const cpf = new Cpf(cpfRaw);
     // if(!cpf) throw new Error("Invalid order");
     // this.cpf = cpf.value;
-    this.cpf = new Cpf(cpfRaw);  // dependencia por associação
+    this.cpf = new Cpf(cpf);  // dependencia por associação
   }
 
   addItem(item: Item, amount: number){
@@ -21,7 +21,7 @@ export default class Order {
   }
 
   addCoupon(coupon: Coupon) {
-    if(coupon.isExpired()) return;
+    if(coupon.isExpired(this.created)) return;
     this.coupon = coupon;
   }
 

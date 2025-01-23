@@ -37,7 +37,7 @@ test("deve criar um pedido com cupom de desconto", function() {
 })
 
 test("deve criar um pedido com cupon de desconto expiado", function() {
-    const order = new Order("839.435.452-10");
+    const order = new Order("839.435.452-10", new Date("2025-01-22"));
     order.addItem(new Item(1, "Musica", "CD", 10), 3);
     order.addCoupon(new Coupon("VALE10", 10, new Date("2024-01-25")));
     expect(order.getTotal()).toBe(30);
