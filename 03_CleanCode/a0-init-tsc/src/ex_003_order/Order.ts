@@ -9,31 +9,34 @@ export default class Order {
   orderItens: OrderItem[] = [];
   coupon: Coupon | undefined;
 
-  constructor(cpf: string, readonly created: Date = new Date()) {
+  constructor(cpf: string, readonly orderCreated: Date = new Date()) {
     // const cpf = new Cpf(cpfRaw);
     // if(!cpf) throw new Error("Invalid order");
     // this.cpf = cpf.value;
     this.cpf = new Cpf(cpf);  // dependencia por associação
   }
 
+  private amount() {
+    let amount = 0;
+    this.orderItens.forEach(element => {
+      amount += element.getTotal();
+    });
+    return amount;
+  }
+  
   addItem(item: Item, amount: number){
     this.orderItens.push(new OrderItem(item.id, item.price, amount));
   }
 
   addCoupon(coupon: Coupon) {
-    if(coupon.isExpired(this.created)) return;
+    if(coupon.isExpired(this.orderCreated)) return;
     this.coupon = coupon;
   }
 
   getTotal() {
-    let total = 0;
-    this.orderItens.forEach(element => {
-      total += element.getTotal();
-    });
-
-    if(this.coupon) {
-      return total -= total * this.coupon.percentage / 100;
+    if (this.coupon) {
+      return this.amount() - this.coupon.calculeteDiscount(this.amount(), this.orderCreated);
     }
-    return total;
+    return this.amount();
   }
 }

@@ -29,16 +29,32 @@ test("deve criar um pedido com 3 itens", function () {
     expect(order.getTotal()).toBe(77);
 })
 
-test("deve criar um pedido com cupom de desconto", function() {
+test("deve criar um pedido com cupom válido (aplica o desconto)", function() {
     const order = new Order("839.435.452-10");
     order.addItem(new Item(1, "Musica", "CD", 10), 3);
     order.addCoupon(new Coupon("VALE10", 10));
     expect(order.getTotal()).toBe(27);
 })
 
-test("deve criar um pedido com cupon de desconto expiado", function() {
+test("deve criar um pedido com cupon expiado (não aplica o desconto)", function() {
     const order = new Order("839.435.452-10", new Date("2025-01-22"));
     order.addItem(new Item(1, "Musica", "CD", 10), 3);
     order.addCoupon(new Coupon("VALE10", 10, new Date("2024-01-25")));
     expect(order.getTotal()).toBe(30);
 })
+
+// test("deve criar um pedido com cupon válido e calcular o desconto (não aplica o desconto)", function() {
+//     const order = new Order("839.435.452-10");
+//     order.addItem(new Item(1, "Musica", "CD", 10), 3);
+//     order.addCoupon(new Coupon("VALE10", 10));
+//     const discount = order.getDiscount();
+//     expect(discount).toBe(3);
+// })
+
+// test("deve criar um pedido com cupon válido e calcular o desconto (não aplica o desconto)", function() {
+//     const order = new Order("839.435.452-10", new Date("2025-01-22"));
+//     order.addItem(new Item(1, "Musica", "CD", 10), 3);
+//     order.addCoupon(new Coupon("VALE10", 10, new Date("2025-01-22")));
+//     const discount = order.getDiscount();
+//     expect(discount).toBe(3);
+// })

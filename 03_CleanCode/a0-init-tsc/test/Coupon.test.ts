@@ -13,3 +13,9 @@ test("Deve criar um cupom de desconto expirado", function () {
   const isExpired = coupon.isExpired(today);
   expect(isExpired).toBeTruthy();
 })
+
+test("Deve criar um cupom válido e calcular o desconto", function () {
+  const coupon = new Coupon("VALE20", 20);
+  const discount = coupon.calculeteDiscount(1000);
+  expect(discount).toBe(200);
+})

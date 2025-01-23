@@ -4,18 +4,23 @@ export default class Coupon {
   //   return value - (value * this.percentage / 100);
   // }
 
-  isValid(today: Date = new Date()) {
+  isValid(requestDate: Date = new Date()) {
     if (!this.expiredDate) return true;   
-    return this.expiredDate.getTime() >= today.getTime();
+    return this.expiredDate.getTime() >= requestDate.getTime();
   }
 
   // isExpired () {
   //   if (!this.expiredDate) return false;
-  //   const today = new Date();
-  //   return this.expiredDate.getTime() < today.getTime();
+  //   const requestDate = new Date();
+  //   return this.expiredDate.getTime() < requestDate.getTime();
   // }
 
-  isExpired(today: Date = new Date()) {
-    return !this.isValid(today);
+  isExpired(requestDate: Date = new Date()) {
+    return !this.isValid(requestDate);
+  }
+
+  calculeteDiscount(amount: number, today: Date = new Date) {
+    if (this.isExpired(today)) return 0;
+    return amount * this.percentage / 100;
   }
 }
