@@ -5,36 +5,36 @@ import Item from './Item';
 import OrderItem from './OrderItem';
 
 export default class Order {
-  // cpf: string;
   cpf: Cpf;
   private orderItens: OrderItem[] = [];
   coupon: Coupon | undefined;
   private freight: number;
 
-  constructor(cpf: string, readonly orderCreated: Date = new Date()) {
-    // const cpf = new Cpf(cpfRaw);
-    // if(!cpf) throw new Error("Invalid order");
-    // this.cpf = cpf.value;
-    this.cpf = new Cpf(cpf);  // dependencia por associação
+  constructor(
+    cpf: string,
+    readonly orderCreated: Date = new Date(),
+    readonly freightCalculator: FreightCalculator
+  ) {
+    this.cpf = new Cpf(cpf); // dependencia por associação
     this.freight = 0;
   }
 
   private amount() {
     let amount = 0;
-    this.orderItens.forEach(element => {
+    this.orderItens.forEach((element) => {
       amount += element.getTotal();
     });
     return amount;
   }
-  
-  addItem(item: Item, amount: number){
-    const itemFreight = FreightCalculator.calculate(item) * amount;
+
+  addItem(item: Item, amount: number) {
+    const itemFreight = this.freightCalculator.calculate(item) * amount;
     this.freight += itemFreight;
     this.orderItens.push(new OrderItem(item.id, item.price, amount));
   }
 
   addCoupon(coupon: Coupon) {
-    if(coupon.isExpired(this.orderCreated)) return;
+    if (coupon.isExpired(this.orderCreated)) return;
     this.coupon = coupon;
   }
 
@@ -44,7 +44,10 @@ export default class Order {
 
   getTotal() {
     if (this.coupon) {
-      return this.amount() - this.coupon.calculeteDiscount(this.amount(), this.orderCreated);
+      return (
+        this.amount() -
+        this.coupon.calculeteDiscount(this.amount(), this.orderCreated)
+      );
     }
     return this.amount();
   }
