@@ -1,19 +1,22 @@
 import Cpf from '../ex_001_cpf/Cpf';
 import Coupon from './Coupon';
+import FreightCalculator from './FreightCalculator';
 import Item from './Item';
 import OrderItem from './OrderItem';
 
 export default class Order {
   // cpf: string;
   cpf: Cpf;
-  orderItens: OrderItem[] = [];
+  private orderItens: OrderItem[] = [];
   coupon: Coupon | undefined;
+  private freight: number;
 
   constructor(cpf: string, readonly orderCreated: Date = new Date()) {
     // const cpf = new Cpf(cpfRaw);
     // if(!cpf) throw new Error("Invalid order");
     // this.cpf = cpf.value;
     this.cpf = new Cpf(cpf);  // dependencia por associação
+    this.freight = 0;
   }
 
   private amount() {
@@ -25,6 +28,8 @@ export default class Order {
   }
   
   addItem(item: Item, amount: number){
+    const itemFreight = FreightCalculator.calculate(item) * amount;
+    this.freight += itemFreight;
     this.orderItens.push(new OrderItem(item.id, item.price, amount));
   }
 
@@ -34,7 +39,7 @@ export default class Order {
   }
 
   getFreight() {
-    return 0;
+    return this.freight;
   }
 
   getTotal() {
