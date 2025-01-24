@@ -33,6 +33,10 @@ export default class Order {
     this.coupon = coupon;
   }
 
+  getFreight() {
+    return 0;
+  }
+
   getTotal() {
     if (this.coupon) {
       return this.amount() - this.coupon.calculeteDiscount(this.amount(), this.orderCreated);
